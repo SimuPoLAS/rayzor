@@ -15,8 +15,7 @@ typedef struct {
 } Ray;
 
 int main() {
-	FILE* log = fopen("/var/log/rayzor.log", "a");
-	setlinebuf(log);
+	FILE* log = fopen("rayzor.log", "a");
 
 	{
 		time_t current;
@@ -58,7 +57,7 @@ int main() {
 
 	Ray* rays = malloc(sizeof(Ray) * numRays);
 	for (int i = 0; i < numRays; i++) {
-		if (scanf("%f %f %f %f %f %f\n", &rays[i].o.x, &rays[i].o.y, &rays[i].o.z, &rays[i].d.x, &rays[i].o.y, &rays[i].d.z) != 6) {
+		if (scanf("%f %f %f %f %f %f\n", &rays[i].o.x, &rays[i].o.y, &rays[i].o.z, &rays[i].d.x, &rays[i].d.y, &rays[i].d.z) != 6) {
 			fprintf(stderr, "bad input, closing\n");
 			fprintf(log, "bad input, closing\n");
 			return 1;
@@ -71,5 +70,6 @@ int main() {
 	free(points);
 	
 	fprintf(log, "Ending session");
+	fclose(log);
 	return 0;
 }
