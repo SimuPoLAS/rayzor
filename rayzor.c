@@ -120,8 +120,19 @@ int main() {
     cl_program program = clCreateProgramWithSource(context, 1,
             (const char **)&source_str, (const size_t *)&source_size, &ret);
 
+    printf("%i AAAA kernel\n", ret);
+
     // Build the program
     ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
+
+    if (ret != CL_SUCCESS) {
+        printf("%i AAAA build\n", ret);
+        size_t len;
+        clGetProgramBuildInfo(program, device_id, CL_PROGRAM_BUILD_LOG, NULL, NULL, &len);
+        char *message = (char*)malloc(sizeof(char) * len);
+        clGetProgramBuildInfo(program, device_id, CL_PROGRAM_BUILD_LOG, len, message, NULL);
+        fprintf(log, "CL kernel build log output:\n%s\n", message);
+    }
 
     // Create the OpenCL kernel
     cl_kernel kernel = clCreateKernel(program, "collision", &ret);
